@@ -16,12 +16,25 @@ class AlbumService {
     return [...this.albums];
   }
 
-  async getById(id) {
+async getById(id) {
     await delay(200);
-    const album = this.albums.find(a => a.id === id);
-    if (!album) {
-      throw new Error('Album not found');
+    
+    // Validate input
+    if (!id) {
+      console.error('AlbumService.getById: No ID provided');
+      throw new Error('Album ID is required');
     }
+    
+    // Normalize ID for comparison (handle both string and number IDs)
+    const normalizedId = String(id).trim();
+    const album = this.albums.find(a => String(a.id) === normalizedId);
+    
+    if (!album) {
+      console.error(`AlbumService.getById: Album not found for ID "${id}" (normalized: "${normalizedId}")`);
+      console.error('Available album IDs:', this.albums.map(a => a.id));
+      throw new Error(`Album not found with ID: ${id}`);
+    }
+    
     return { ...album };
   }
 
@@ -43,26 +56,52 @@ class AlbumService {
     return this.albums.filter(album => album.artistId === artistId).map(album => ({ ...album }));
   }
 
-  async getTracksByAlbum(albumId) {
+async getTracksByAlbum(albumId) {
     await delay(300);
-    const album = this.albums.find(a => a.id === albumId);
-    if (!album || !album.tracks) return [];
+    
+    if (!albumId) {
+      console.error('AlbumService.getTracksByAlbum: No album ID provided');
+      return [];
+    }
+    
+    const normalizedAlbumId = String(albumId).trim();
+    const album = this.albums.find(a => String(a.id) === normalizedAlbumId);
+    
+    if (!album) {
+      console.error(`AlbumService.getTracksByAlbum: Album not found for ID "${albumId}"`);
+      return [];
+    }
+    
+    if (!album.tracks || !Array.isArray(album.tracks)) {
+      console.warn(`AlbumService.getTracksByAlbum: No tracks found for album "${album.title}"`);
+      return [];
+    }
     
     return album.tracks.map(trackId => {
-      const track = this.tracks.find(t => t.id === trackId);
+      const normalizedTrackId = String(trackId).trim();
+      const track = this.tracks.find(t => String(t.id) === normalizedTrackId);
+      if (!track) {
+        console.warn(`AlbumService.getTracksByAlbum: Track not found for ID "${trackId}"`);
+      }
       return track ? { ...track } : null;
     }).filter(Boolean);
   }
 
-  async getAlbumWithTracks(albumId) {
+async getAlbumWithTracks(albumId) {
     await delay(350);
-    const album = await this.getById(albumId);
-    const tracks = await this.getTracksByAlbum(albumId);
     
-    return {
-      ...album,
-      trackList: tracks
-    };
+    try {
+      const album = await this.getById(albumId);
+      const tracks = await this.getTracksByAlbum(albumId);
+      
+      return {
+        ...album,
+        trackList: tracks || []
+      };
+    } catch (error) {
+      console.error(`AlbumService.getAlbumWithTracks: Failed to get album with tracks for ID "${albumId}":`, error);
+      throw error;
+    }
   }
 
   async search(query) {
@@ -120,11 +159,19 @@ class AlbumService {
     return { ...newAlbum };
   }
 
-  async update(id, updates) {
+async update(id, updates) {
     await delay(300);
-    const index = this.albums.findIndex(a => a.id === id);
+    
+    if (!id) {
+      throw new Error('Album ID is required for update');
+    }
+    
+    const normalizedId = String(id).trim();
+    const index = this.albums.findIndex(a => String(a.id) === normalizedId);
+    
     if (index === -1) {
-      throw new Error('Album not found');
+      console.error(`AlbumService.update: Album not found for ID "${id}"`);
+      throw new Error(`Album not found with ID: ${id}`);
     }
     
     this.albums[index] = { ...this.albums[index], ...updates };
@@ -142,22 +189,38 @@ class AlbumService {
     return { ...deletedAlbum };
   }
 
-  async addToLibrary(albumId) {
+async addToLibrary(albumId) {
     await delay(200);
-    const album = this.albums.find(a => a.id === albumId);
+    
+    if (!albumId) {
+      throw new Error('Album ID is required');
+    }
+    
+    const normalizedId = String(albumId).trim();
+    const album = this.albums.find(a => String(a.id) === normalizedId);
+    
     if (!album) {
-      throw new Error('Album not found');
+      console.error(`AlbumService.addToLibrary: Album not found for ID "${albumId}"`);
+      throw new Error(`Album not found with ID: ${albumId}`);
     }
     
     // Simulate adding to user's library
     return { ...album, inLibrary: true };
   }
 
-  async removeFromLibrary(albumId) {
+async removeFromLibrary(albumId) {
     await delay(200);
-    const album = this.albums.find(a => a.id === albumId);
+    
+    if (!albumId) {
+      throw new Error('Album ID is required');
+    }
+    
+    const normalizedId = String(albumId).trim();
+    const album = this.albums.find(a => String(a.id) === normalizedId);
+    
     if (!album) {
-      throw new Error('Album not found');
+      console.error(`AlbumService.removeFromLibrary: Album not found for ID "${albumId}"`);
+      throw new Error(`Album not found with ID: ${albumId}`);
     }
     
     // Simulate removing from user's library

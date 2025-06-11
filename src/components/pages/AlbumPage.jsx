@@ -22,22 +22,50 @@ const AlbumPage = () => {
     loadAlbumData();
   }, [id]);
 
-  const loadAlbumData = async () => {
+const loadAlbumData = async () => {
     try {
       setLoading(true);
       setError(null);
+
+      // Validate album ID first
+      if (!id) {
+        throw new Error('No album ID provided');
+      }
+
+      console.log(`Loading album data for ID: ${id}`);
 
       const [albumData, albumTracks] = await Promise.all([
         albumService.getById(id),
         albumService.getTracksByAlbum(id)
       ]);
 
+      if (!albumData) {
+        throw new Error('Album data is empty');
+      }
+
       setAlbum(albumData);
-      setTracks(albumTracks);
+      setTracks(albumTracks || []);
+      
+      // Set initial library status if available
+      if (albumData.inLibrary !== undefined) {
+        setInLibrary(albumData.inLibrary);
+      }
+      
+      console.log(`Successfully loaded album: ${albumData.title}`);
     } catch (err) {
       console.error('Error loading album:', err);
-      setError(err.message);
-      toast.error('Failed to load album information');
+      console.error('Album ID attempted:', id);
+      
+      // Provide more specific error messages
+      let errorMessage = 'Failed to load album information';
+      if (err.message.includes('not found')) {
+        errorMessage = `Album not found. The album with ID "${id}" may have been removed or the link may be incorrect.`;
+      } else if (err.message.includes('Network')) {
+        errorMessage = 'Network error. Please check your connection and try again.';
+      }
+      
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -52,18 +80,32 @@ const AlbumPage = () => {
     }
   };
 
-  const handlePlayAll = async () => {
-    if (tracks.length > 0) {
-      try {
-        await playerService.playPlaylist(tracks);
-        toast.success(`Playing "${album.title}"`);
-      } catch (err) {
-        toast.error('Failed to play album');
-      }
+const handlePlayAll = async () => {
+    if (!tracks || tracks.length === 0) {
+      toast.warn('No tracks available to play');
+      return;
+    }
+
+    if (!album) {
+      toast.error('Album information not available');
+      return;
+    }
+
+    try {
+      await playerService.playPlaylist(tracks);
+      toast.success(`Playing "${album.title}"`);
+    } catch (err) {
+      console.error('Error playing album:', err);
+      toast.error('Failed to play album');
     }
   };
 
-  const handleLibraryToggle = async () => {
+const handleLibraryToggle = async () => {
+    if (!album || !id) {
+      toast.error('Album information not available');
+      return;
+    }
+
     try {
       if (inLibrary) {
         await albumService.removeFromLibrary(id);
@@ -75,6 +117,7 @@ const AlbumPage = () => {
         toast.success(`Added "${album.title}" to your library`);
       }
     } catch (err) {
+      console.error('Error updating library:', err);
       toast.error('Failed to update library');
     }
   };
@@ -100,8 +143,23 @@ const AlbumPage = () => {
     return <LoadingMessage message="Loading album information..." />;
   }
 
-  if (error) {
-    return <ErrorMessage message={error} onRetry={loadAlbumData} />;
+if (error) {
+    return (
+      <div className="min-h-screen bg-background text-white flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <ErrorMessage message={error} onRetry={loadAlbumData} />
+          <div className="mt-6">
+            <Link 
+              to="/" 
+              className="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors"
+            >
+              <ApperIcon name="Home" className="w-4 h-4 mr-2" />
+              Back to Home
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!album) {
@@ -127,8 +185,8 @@ const AlbumPage = () => {
         <section className="mb-12">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-heading font-bold">Tracks</h2>
-            <div className="text-sm text-gray-400">
-              {tracks.length} songs, {formatDuration(album.duration)}
+<div className="text-sm text-gray-400">
+              {tracks?.length || 0} songs{album?.duration ? `, ${formatDuration(album.duration)}` : ''}
             </div>
           </div>
           
