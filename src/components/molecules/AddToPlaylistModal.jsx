@@ -97,9 +97,9 @@ const AddToPlaylistModal = ({ isOpen, onClose, track, onSuccess }) => {
             
             {track && (
               <div className="mt-4 flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gray-600 rounded overflow-hidden flex-shrink-0">
+<div className="w-12 h-12 bg-gray-600 rounded overflow-hidden flex-shrink-0">
                   <img
-                    src={track.image}
+                    src={track.coverUrl}
                     alt={track.title}
                     className="w-full h-full object-cover"
                     onError={(e) => {
@@ -162,9 +162,9 @@ const AddToPlaylistModal = ({ isOpen, onClose, track, onSuccess }) => {
                     disabled={adding}
                     className="w-full flex items-center space-x-3 p-3 rounded-lg text-left transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <div className="w-12 h-12 bg-gray-600 rounded overflow-hidden flex-shrink-0">
+<div className="w-12 h-12 bg-gray-600 rounded overflow-hidden flex-shrink-0">
                       <img
-                        src={playlist.image}
+                        src={playlist.coverUrl}
                         alt={playlist.name}
                         className="w-full h-full object-cover"
                         onError={(e) => {
