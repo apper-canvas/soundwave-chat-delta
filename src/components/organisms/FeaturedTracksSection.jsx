@@ -1,11 +1,15 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
-import { trackService, playerService } from '../services';
-import TrackList from './TrackList';
-import ApperIcon from './ApperIcon';
+import { trackService, playerService } from '@/services';
+import TrackList from '@/components/organisms/TrackList';
+import ApperIcon from '@/components/ApperIcon';
+import Button from '@/components/atoms/Button';
+import ErrorMessage from '@/components/molecules/ErrorMessage';
+import LoadingMessage from '@/components/molecules/LoadingMessage';
+import EmptyStateMessage from '@/components/molecules/EmptyStateMessage';
 
-export default function MainFeature() {
+const FeaturedTracksSection = () => {
   const [featuredTracks, setFeaturedTracks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -73,21 +77,7 @@ export default function MainFeature() {
   }
 
   if (error) {
-    return (
-      <div className="text-center py-12">
-        <ApperIcon name="AlertCircle" className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-        <h3 className="text-xl font-heading font-semibold mb-2">Something went wrong</h3>
-        <p className="text-gray-400 mb-6">{error}</p>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={loadFeaturedTracks}
-          className="bg-primary text-black px-6 py-2 rounded-full font-medium"
-        >
-          Try Again
-        </motion.button>
-      </div>
-    );
+    return <ErrorMessage message={error} onRetry={loadFeaturedTracks} />;
   }
 
   return (
@@ -113,38 +103,34 @@ export default function MainFeature() {
 
       {/* Quick Actions */}
       <div className="flex flex-wrap gap-4 justify-center">
-        <motion.button
+        <Button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => handlePlayTrack(featuredTracks[0])}
           disabled={!featuredTracks.length}
-          className="bg-primary text-black px-6 py-3 rounded-full font-medium flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-primary text-black px-6 py-3 rounded-full flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <ApperIcon name="Play" className="w-5 h-5" />
           <span>Play All</span>
-        </motion.button>
+        </Button>
         
-        <motion.button
+        <Button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-surface text-white px-6 py-3 rounded-full font-medium flex items-center space-x-2 hover:bg-gray-600 transition-colors"
+          className="bg-surface text-white px-6 py-3 rounded-full flex items-center space-x-2 hover:bg-gray-600"
         >
           <ApperIcon name="Shuffle" className="w-5 h-5" />
           <span>Shuffle</span>
-        </motion.button>
+        </Button>
       </div>
 
       {/* Track List */}
       {featuredTracks.length === 0 ? (
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="text-center py-12"
-        >
-          <ApperIcon name="Music" className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium mb-2">No tracks available</h3>
-          <p className="text-gray-400">Check back later for new music</p>
-        </motion.div>
+        <EmptyStateMessage
+          icon="Music"
+          title="No tracks available"
+          message="Check back later for new music"
+        />
       ) : (
         <div className="bg-surface rounded-lg p-6">
           <TrackList 
@@ -152,7 +138,7 @@ export default function MainFeature() {
             showIndex={true}
             onPlay={handlePlayTrack}
             onLike={handleLikeTrack}
-            currentlyPlaying={currentlyPlaying?.id}
+            currentlyPlayingId={currentlyPlaying?.id}
           />
         </div>
       )}
@@ -162,7 +148,7 @@ export default function MainFeature() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="fixed bottom-24 right-6 bg-primary text-black p-4 rounded-lg shadow-lg flex items-center space-x-3 max-w-sm"
+          className="fixed bottom-24 right-6 bg-primary text-black p-4 rounded-lg shadow-lg flex items-center space-x-3 max-w-sm z-50"
         >
           <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0">
             <img
@@ -184,4 +170,6 @@ export default function MainFeature() {
       )}
     </div>
   );
-}
+};
+
+export default FeaturedTracksSection;

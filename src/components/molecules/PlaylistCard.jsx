@@ -1,8 +1,10 @@
+import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import ApperIcon from './ApperIcon';
+import ApperIcon from '@/components/ApperIcon';
+import Button from '@/components/atoms/Button';
 
-export default function PlaylistCard({ playlist }) {
+const PlaylistCard = ({ playlist }) => {
   const navigate = useNavigate();
 
   const handlePlay = (e) => {
@@ -17,7 +19,6 @@ export default function PlaylistCard({ playlist }) {
       onClick={() => navigate(`/playlist/${playlist.id}`)}
       className="bg-surface rounded-lg p-4 cursor-pointer transition-all hover:bg-gray-700 group relative"
     >
-      {/* Cover Image */}
       <div className="relative mb-4 aspect-square">
         <img
           src={playlist.coverUrl}
@@ -25,8 +26,7 @@ export default function PlaylistCard({ playlist }) {
           className="w-full h-full object-cover rounded-lg shadow-lg"
         />
         
-        {/* Play Button Overlay */}
-        <motion.button
+        <Button
           initial={{ opacity: 0, y: 8 }}
           whileHover={{ opacity: 1, y: 0 }}
           animate={{ 
@@ -46,10 +46,9 @@ export default function PlaylistCard({ playlist }) {
           onClick={handlePlay}
         >
           <ApperIcon name="Play" className="w-5 h-5 ml-0.5" />
-        </motion.button>
+        </Button>
       </div>
 
-      {/* Playlist Info */}
       <div className="space-y-1">
         <h3 className="font-heading font-semibold text-white truncate">
           {playlist.name}
@@ -67,4 +66,6 @@ export default function PlaylistCard({ playlist }) {
       </div>
     </motion.div>
   );
-}
+};
+
+export default PlaylistCard;

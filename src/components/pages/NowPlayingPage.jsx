@@ -1,10 +1,16 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { playerService } from '../services';
-import ApperIcon from '../components/ApperIcon';
+import { playerService } from '@/services';
+import ApperIcon from '@/components/ApperIcon';
+import Button from '@/components/atoms/Button';
+import ProgressBar from '@/components/atoms/ProgressBar';
+import PlayerControls from '@/components/organisms/PlayerControls';
+import VolumeControl from '@/components/organisms/VolumeControl';
+import LoadingMessage from '@/components/molecules/LoadingMessage';
+import EmptyStateMessage from '@/components/molecules/EmptyStateMessage';
 
-export default function NowPlaying() {
+const NowPlayingPage = () => {
   const [playerState, setPlayerState] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -57,18 +63,22 @@ export default function NowPlaying() {
     }
   };
 
-  const handleVolumeChange = async (volume) => {
+  const handleVolumeChange = async (volumeValue) => {
     try {
-      const newState = await playerService.setVolume(volume);
+      const newState = await playerService.setVolume(volumeValue);
       setPlayerState(newState);
     } catch (err) {
       console.error('Failed to set volume:', err);
     }
   };
 
-  const handleSeek = async (progress) => {
+  const handleSeek = async (e) => {
+    if (!playerState?.currentTrack) return;
     try {
-      const newState = await playerService.seekTo(progress);
+      const rect = e.currentTarget.getBoundingClientRect();
+      const newProgressRatio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const seekTime = newProgressRatio * playerState.currentTrack.duration;
+      const newState = await playerService.seekTo(seekTime);
       setPlayerState(newState);
     } catch (err) {
       console.error('Failed to seek:', err);
@@ -76,59 +86,49 @@ export default function NowPlaying() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent"></div>
-      </div>
-    );
+    return <LoadingMessage />;
   }
 
   if (!playerState?.currentTrack) {
     return (
-      <div className="flex flex-col items-center justify-center h-full text-center p-6">
-        <ApperIcon name="Music" className="w-24 h-24 text-gray-400 mb-6" />
-        <h2 className="text-2xl font-heading font-semibold mb-2">No music playing</h2>
-        <p className="text-gray-400 mb-8">Start playing a song to see it here</p>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => navigate('/')}
-          className="bg-primary text-black px-6 py-3 rounded-full font-medium"
-        >
-          Browse Music
-        </motion.button>
-      </div>
+      <EmptyStateMessage
+        icon="Music"
+        title="No music playing"
+        message="Start playing a song to see it here"
+        actionText="Browse Music"
+        onActionClick={() => navigate('/')}
+      />
     );
   }
 
-  const { currentTrack, isPlaying, progress, volume, queue } = playerState;
+  const { currentTrack, isPlaying, progress, volume } = playerState;
   const progressPercent = (progress / currentTrack.duration) * 100;
 
   return (
     <div className="h-full flex flex-col max-w-full overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-gray-700">
-        <motion.button
+        <Button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => navigate(-1)}
-          className="text-gray-400 hover:text-white transition-colors"
+          className="text-gray-400 hover:text-white transition-colors p-0 bg-transparent"
         >
           <ApperIcon name="ChevronDown" className="w-6 h-6" />
-        </motion.button>
+        </Button>
         
         <div className="text-center">
           <p className="text-sm text-gray-400">PLAYING FROM PLAYLIST</p>
           <p className="font-medium">Liked Songs</p>
         </div>
         
-        <motion.button
+        <Button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          className="text-gray-400 hover:text-white transition-colors"
+          className="text-gray-400 hover:text-white transition-colors p-0 bg-transparent"
         >
           <ApperIcon name="MoreHorizontal" className="w-6 h-6" />
-        </motion.button>
+        </Button>
       </div>
 
       {/* Main Content */}
@@ -179,13 +179,11 @@ export default function NowPlaying() {
         {/* Progress Bar */}
         <div className="w-full max-w-md space-y-2">
           <div className="relative">
-            <div className="h-1 bg-gray-700 rounded-full overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${progressPercent}%` }}
-                className="h-full bg-primary progress-glow"
-              />
-            </div>
+            <ProgressBar
+              progressPercent={progressPercent}
+              onClick={handleSeek}
+              className="h-1 bg-gray-700 rounded-full"
+            />
             <motion.div
               style={{ left: `${progressPercent}%` }}
               className="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-white rounded-full shadow-lg cursor-pointer"
@@ -193,10 +191,11 @@ export default function NowPlaying() {
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               onDrag={(_, info) => {
-                const rect = info.point.x;
-                const newProgress = Math.max(0, Math.min(100, (rect / 400) * 100));
-                handleSeek((newProgress / 100) * currentTrack.duration);
+                const parentRect = info.target.parentElement.getBoundingClientRect();
+                const newProgressRatio = Math.max(0, Math.min(1, (info.point.x - parentRect.left) / parentRect.width));
+                playerService.seekTo(newProgressRatio * currentTrack.duration); // Direct service call for smooth drag
               }}
+              onDragEnd={() => loadPlayerState()} // Update full state after drag ends
             />
           </div>
           
@@ -207,91 +206,48 @@ export default function NowPlaying() {
         </div>
 
         {/* Controls */}
-        <div className="flex items-center space-x-8">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="text-gray-400 hover:text-white transition-colors"
-          >
-            <ApperIcon name="Shuffle" className="w-6 h-6" />
-          </motion.button>
-          
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={handlePrevious}
-            className="text-white hover:text-gray-300 transition-colors"
-          >
-            <ApperIcon name="SkipBack" className="w-8 h-8" />
-          </motion.button>
-          
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handlePlayPause}
-            className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-black hover:bg-gray-200 transition-colors"
-          >
-            <ApperIcon 
-              name={isPlaying ? "Pause" : "Play"} 
-              className={`w-8 h-8 ${!isPlaying ? 'ml-1' : ''}`} 
-            />
-          </motion.button>
-          
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={handleNext}
-            className="text-white hover:text-gray-300 transition-colors"
-          >
-            <ApperIcon name="SkipForward" className="w-8 h-8" />
-          </motion.button>
-          
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="text-gray-400 hover:text-white transition-colors"
-          >
-            <ApperIcon name="Repeat" className="w-6 h-6" />
-          </motion.button>
-        </div>
+        <PlayerControls
+          isPlaying={isPlaying}
+          onPlayPause={handlePlayPause}
+          onNext={handleNext}
+          onPrevious={handlePrevious}
+          playButtonSize="lg"
+          showShuffleAndRepeat={true}
+        />
 
         {/* Additional Controls */}
         <div className="flex items-center space-x-4 w-full max-w-md">
-          <motion.button
+          <Button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-gray-400 hover:text-white transition-colors p-0 bg-transparent"
           >
             <ApperIcon name="Mic2" className="w-5 h-5" />
-          </motion.button>
+          </Button>
           
-          <motion.button
+          <Button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-gray-400 hover:text-white transition-colors p-0 bg-transparent"
           >
             <ApperIcon name="ListMusic" className="w-5 h-5" />
-          </motion.button>
+          </Button>
           
-          <motion.button
+          <Button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-gray-400 hover:text-white transition-colors p-0 bg-transparent"
           >
             <ApperIcon name="PcSpeaker" className="w-5 h-5" />
-          </motion.button>
+          </Button>
           
           <div className="flex items-center space-x-2 flex-1">
-            <ApperIcon name="Volume2" className="w-5 h-5 text-gray-400" />
-            <div className="flex-1 h-1 bg-gray-700 rounded-full overflow-hidden">
-              <motion.div
-                style={{ width: `${volume}%` }}
-                className="h-full bg-white"
-              />
-            </div>
+            <VolumeControl volume={volume} onVolumeChange={handleVolumeChange} showIconOnly={false} />
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default NowPlayingPage;
