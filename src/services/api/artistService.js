@@ -18,12 +18,41 @@ class ArtistService {
 
 async getById(id) {
     await delay(200);
+    
+    // Enhanced ID validation and logging
+    console.log('ArtistService.getById called with ID:', id, 'Type:', typeof id);
+    
+    if (!id || id === null || id === undefined) {
+      throw new Error('Artist ID is required');
+    }
+    
+    // Check for route parameter issues
+    if (String(id) === ':id') {
+      console.error('Received literal ":id" parameter - indicates routing configuration issue');
+      throw new Error('Invalid route parameter ":id" - check route configuration');
+    }
+    
+    if (String(id).startsWith(':')) {
+      console.error('Received route parameter:', id);
+      throw new Error(`Invalid route parameter "${id}" - check URL format`);
+    }
+    
     // Convert id to string for consistent comparison (URL params are always strings)
-    const artistId = String(id);
+    const artistId = String(id).trim();
+    
+    if (artistId === '') {
+      throw new Error('Artist ID cannot be empty');
+    }
+    
+    console.log('Searching for artist with processed ID:', artistId);
     const artist = this.artists.find(a => String(a.id) === artistId);
+    
     if (!artist) {
+      console.error('Artist not found. Available artist IDs:', this.artists.map(a => a.id));
       throw new Error(`Artist with ID '${id}' not found`);
     }
+    
+    console.log('Found artist:', artist.name);
     return { ...artist };
   }
 
@@ -42,14 +71,26 @@ async getById(id) {
 
 async getAlbumsByArtist(artistId) {
     await delay(250);
-    const id = String(artistId);
+    
+    if (!artistId || String(artistId).startsWith(':')) {
+      console.warn('Invalid artist ID for albums lookup:', artistId);
+      return [];
+    }
+    
+    const id = String(artistId).trim();
     return this.albums.filter(album => String(album.artistId) === id).map(album => ({ ...album }));
   }
 
 async getTracksByArtist(artistId) {
     await delay(300);
+    
+    if (!artistId || String(artistId).startsWith(':')) {
+      console.warn('Invalid artist ID for tracks lookup:', artistId);
+      return [];
+    }
+    
     // Get artist's top tracks based on topTracks array
-    const id = String(artistId);
+    const id = String(artistId).trim();
     const artist = this.artists.find(a => String(a.id) === id);
     if (!artist) return [];
     
@@ -65,7 +106,13 @@ async getTracksByArtist(artistId) {
 
 async getRelatedArtists(artistId) {
     await delay(300);
-    const id = String(artistId);
+    
+    if (!artistId || String(artistId).startsWith(':')) {
+      console.warn('Invalid artist ID for related artists lookup:', artistId);
+      return [];
+    }
+    
+    const id = String(artistId).trim();
     const artist = this.artists.find(a => String(a.id) === id);
     if (!artist || !artist.relatedArtists) return [];
     

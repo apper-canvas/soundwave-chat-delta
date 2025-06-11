@@ -23,7 +23,40 @@ const ArtistPage = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [isFollowing, setIsFollowing] = useState(false);
 
+  // Validate route parameter
+  const validateArtistId = (artistId) => {
+    if (!artistId || artistId.trim() === '') {
+      return { valid: false, error: 'Artist ID is missing from the URL' };
+    }
+    
+    // Check for literal route parameter (indicates routing issue)
+    if (artistId === ':id') {
+      return { 
+        valid: false, 
+        error: 'Invalid route configuration - receiving literal ":id" parameter' 
+      };
+    }
+    
+    // Check for other route parameter patterns
+    if (artistId.startsWith(':')) {
+      return { 
+        valid: false, 
+        error: `Invalid route parameter: ${artistId}` 
+      };
+    }
+    
+    return { valid: true, error: null };
+  };
+
   useEffect(() => {
+    const validation = validateArtistId(id);
+    if (!validation.valid) {
+      setError(validation.error);
+      setLoading(false);
+      toast.error(validation.error);
+      return;
+    }
+    
     loadArtistData();
   }, [id]);
 
@@ -32,6 +65,14 @@ const loadArtistData = async () => {
       setLoading(true);
       setError(null);
 
+      // Double-check ID validation before API call
+      const validation = validateArtistId(id);
+      if (!validation.valid) {
+        throw new Error(validation.error);
+      }
+
+      console.log('Loading artist data for ID:', id); // Debug log
+      
       // First, try to get the artist data
       const artistData = await artistService.getById(id);
       setArtist(artistData);
@@ -60,15 +101,27 @@ const loadArtistData = async () => {
       }
     } catch (err) {
       console.error('Error loading artist:', err);
-      const errorMessage = err.message || 'Failed to load artist information';
-      setError(errorMessage);
+      console.error('Attempted to load artist with ID:', id); // Debug info
       
-      // More specific error messages
+      let errorMessage = 'Failed to load artist information';
+      let toastMessage = 'Failed to load artist information';
+      
+      // Handle different error types
       if (err.message?.includes('not found')) {
-        toast.error('Artist not found. Please check the URL and try again.');
+        errorMessage = `Artist with ID "${id}" not found`;
+        toastMessage = 'Artist not found. Please check the URL and try again.';
+      } else if (err.message?.includes('route parameter') || err.message?.includes('route configuration')) {
+        errorMessage = 'Invalid URL - please check the artist link';
+        toastMessage = 'Invalid artist URL. Please try accessing the artist from the main page.';
+      } else if (err.message?.includes('missing')) {
+        errorMessage = 'Invalid artist URL';
+        toastMessage = 'Invalid artist URL. Please try again.';
       } else {
-        toast.error('Failed to load artist information');
+        errorMessage = err.message || errorMessage;
       }
+      
+      setError(errorMessage);
+      toast.error(toastMessage);
     } finally {
       setLoading(false);
     }
@@ -114,12 +167,38 @@ toast.success(`Playing ${artist?.name || 'artist'}'s top tracks`);
     return <LoadingMessage message="Loading artist information..." />;
   }
 
-  if (error) {
-    return <ErrorMessage message={error} onRetry={loadArtistData} />;
+if (error) {
+    // Don't show retry button for route parameter errors
+    const isRouteError = error.includes('route') || error.includes('URL') || id === ':id' || !id;
+    return (
+      <div className="min-h-screen bg-background text-white flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-6">
+          <ErrorMessage 
+            message={error} 
+            onRetry={isRouteError ? null : loadArtistData}
+          />
+          {isRouteError && (
+            <div className="mt-6">
+              <Link 
+                to="/" 
+                className="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+              >
+                <ApperIcon name="Home" className="w-4 h-4 mr-2" />
+                Go to Home Page
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+    );
   }
 
   if (!artist) {
-    return <ErrorMessage message="Artist not found" />;
+    return (
+      <div className="min-h-screen bg-background text-white flex items-center justify-center">
+        <ErrorMessage message="Artist data not available" onRetry={loadArtistData} />
+      </div>
+    );
   }
 
   const tabs = [
