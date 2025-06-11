@@ -1,0 +1,199 @@
+[
+  {
+    "id": "1",
+    "title": "Endless Summer",
+    "artistId": "1",
+    "artistName": "The Midnight",
+    "coverImage": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=800&fit=crop",
+    "releaseDate": "2016-08-05",
+    "genre": "Synthwave",
+    "duration": 2940,
+    "trackCount": 12,
+    "description": "The debut album that established The Midnight as pioneers of the modern synthwave movement. Endless Summer captures the nostalgic essence of 80s summers with lush synthesizers, dreamy vocals, and evocative storytelling. Each track tells a story of youth, love, and the bittersweet passage of time.",
+    "label": "Independent",
+    "producer": "Tim McEwan",
+    "recordingLocation": "Los Angeles, CA",
+    "credits": {
+      "vocals": "Tyler Lyle",
+      "synthesizers": "Tim McEwan",
+      "guitars": "Tyler Lyle",
+      "drums": "Programming"
+    },
+    "tracks": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+    "reviews": {
+      "averageRating": 4.7,
+      "totalReviews": 2840
+    },
+    "chartPositions": {
+      "billboard200": null,
+      "indie": 15,
+      "electronic": 3
+    },
+    "tags": ["nostalgic", "dreamy", "atmospheric", "80s", "summer"],
+    "availability": ["streaming", "digital", "vinyl"]
+  },
+  {
+    "id": "2",
+    "title": "Nocturnal",
+    "artistId": "1",
+    "artistName": "The Midnight",
+    "coverImage": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=800&fit=crop",
+    "releaseDate": "2017-07-13",
+    "genre": "Synthwave",
+    "duration": 3120,
+    "trackCount": 13,
+    "description": "The Midnight's sophomore album explores darker themes while maintaining their signature nostalgic sound. Nocturnal delves into the complexities of modern life, relationships, and the search for meaning in an increasingly digital world. The album features more sophisticated production and deeper lyrical content.",
+    "label": "Independent",
+    "producer": "Tim McEwan",
+    "recordingLocation": "Los Angeles, CA",
+    "credits": {
+      "vocals": "Tyler Lyle",
+      "synthesizers": "Tim McEwan",
+      "guitars": "Tyler Lyle",
+      "saxophone": "Guest Musicians"
+    },
+    "tracks": ["13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25"],
+    "reviews": {
+      "averageRating": 4.8,
+      "totalReviews": 3200
+    },
+    "chartPositions": {
+      "billboard200": null,
+      "indie": 12,
+      "electronic": 2
+    },
+    "tags": ["atmospheric", "emotional", "sophisticated", "night", "urban"],
+    "availability": ["streaming", "digital", "vinyl", "cd"]
+  },
+  {
+    "id": "3",
+    "title": "Kids",
+    "artistId": "1",
+    "artistName": "The Midnight",
+    "coverImage": "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800&h=800&fit=crop",
+    "releaseDate": "2018-09-21",
+    "genre": "Synthwave",
+    "duration": 2760,
+    "trackCount": 11,
+    "description": "A deeply personal album reflecting on childhood, growing up, and the loss of innocence. Kids combines The Midnight's signature synthwave sound with more introspective lyrics and mature themes. The album features some of their most beloved tracks and showcases the band's evolution as storytellers.",
+    "label": "Independent",
+    "producer": "Tim McEwan & Tyler Lyle",
+    "recordingLocation": "Los Angeles, CA & Atlanta, GA",
+    "credits": {
+      "vocals": "Tyler Lyle",
+      "synthesizers": "Tim McEwan",
+      "guitars": "Tyler Lyle",
+      "additional vocals": "Nikki Flores"
+    },
+    "tracks": ["26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36"],
+    "reviews": {
+      "averageRating": 4.9,
+      "totalReviews": 4100
+    },
+    "chartPositions": {
+      "billboard200": 189,
+      "indie": 8,
+      "electronic": 1
+    },
+    "tags": ["nostalgic", "coming-of-age", "emotional", "introspective", "mature"],
+    "availability": ["streaming", "digital", "vinyl", "cd", "cassette"]
+  },
+  {
+    "id": "4",
+    "title": "Dark All Day",
+    "artistId": "2",
+    "artistName": "GUNSHIP",
+    "coverImage": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=800&fit=crop",
+    "releaseDate": "2018-10-31",
+    "genre": "Darksynth",
+    "duration": 3360,
+    "trackCount": 14,
+    "description": "GUNSHIP's debut album is a cinematic journey through neon-lit cityscapes and cyberpunk nightmares. Dark All Day combines aggressive synthwave with movie samples and video game influences, creating an immersive audio-visual experience. The album established GUNSHIP as leaders in the darksynth movement.",
+    "label": "Independent",
+    "producer": "GUNSHIP",
+    "recordingLocation": "London, UK",
+    "credits": {
+      "vocals": "Dan Haigh, Alex Westaway",
+      "synthesizers": "Alex Gingell",
+      "programming": "GUNSHIP",
+      "samples": "Various Films & Games"
+    },
+    "tracks": ["37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50"],
+    "reviews": {
+      "averageRating": 4.6,
+      "totalReviews": 1890
+    },
+    "chartPositions": {
+      "billboard200": null,
+      "indie": 25,
+      "electronic": 8
+    },
+    "tags": ["dark", "cinematic", "cyberpunk", "aggressive", "atmospheric"],
+    "availability": ["streaming", "digital", "vinyl"]
+  },
+  {
+    "id": "5",
+    "title": "Unicorn",
+    "artistId": "2",
+    "artistName": "GUNSHIP",
+    "coverImage": "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800&h=800&fit=crop",
+    "releaseDate": "2021-04-16",
+    "genre": "Darksynth",
+    "duration": 2880,
+    "trackCount": 12,
+    "description": "GUNSHIP's sophomore effort pushes the boundaries of darksynth even further. Unicorn features collaborations with notable guest vocalists and explores themes of technology, humanity, and the blurred lines between reality and digital worlds. The album showcases the band's growth while maintaining their signature cinematic approach.",
+    "label": "Independent",
+    "producer": "GUNSHIP",
+    "recordingLocation": "London, UK",
+    "credits": {
+      "vocals": "Dan Haigh, Alex Westaway, Guest Vocalists",
+      "synthesizers": "Alex Gingell",
+      "programming": "GUNSHIP",
+      "guitars": "Alex Westaway"
+    },
+    "tracks": ["51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62"],
+    "reviews": {
+      "averageRating": 4.7,
+      "totalReviews": 2100
+    },
+    "chartPositions": {
+      "billboard200": null,
+      "indie": 18,
+      "electronic": 5
+    },
+    "tags": ["futuristic", "collaborative", "intense", "evolved", "boundary-pushing"],
+    "availability": ["streaming", "digital", "vinyl", "cd"]
+  },
+  {
+    "id": "6",
+    "title": "I Am the Night",
+    "artistId": "3",
+    "artistName": "Perturbator",
+    "coverImage": "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=800&h=800&fit=crop",
+    "releaseDate": "2014-05-09",
+    "genre": "Darksynth",
+    "duration": 2520,
+    "trackCount": 10,
+    "description": "Perturbator's breakthrough album that defined the darksynth genre. I Am the Night is a relentless assault of dark synthesizers, horror movie samples, and cyberpunk aesthetics. The album creates a nightmarish soundscape that perfectly captures the essence of 80s horror and sci-fi cinema.",
+    "label": "Blood Music",
+    "producer": "James Kent (Perturbator)",
+    "recordingLocation": "Paris, France",
+    "credits": {
+      "all instruments": "James Kent",
+      "mastering": "James Kent",
+      "artwork": "Various Artists"
+    },
+    "tracks": ["63", "64", "65", "66", "67", "68", "69", "70", "71", "72"],
+    "reviews": {
+      "averageRating": 4.8,
+      "totalReviews": 2650
+    },
+    "chartPositions": {
+      "billboard200": null,
+      "indie": null,
+      "electronic": 12
+    },
+    "tags": ["horror", "cyberpunk", "aggressive", "dark", "defining"],
+    "availability": ["streaming", "digital", "vinyl", "cd"]
+  }
+]

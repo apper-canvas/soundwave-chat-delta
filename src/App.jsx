@@ -14,7 +14,7 @@ function App() {
     <BrowserRouter>
       <div className="min-h-screen bg-background text-white">
         <Routes>
-          <Route path="/" element={<Layout />}>
+<Route path="/" element={<Layout />}>
             {routeArray.map(route => (
               <Route 
                 key={route.id}
@@ -22,7 +22,7 @@ function App() {
                 element={<route.component />}
               />
             ))}
-<Route path="/playlist/:id" element={<PlaylistPage />} />
+            <Route path="/playlist/:id" element={<PlaylistPage />} />
             <Route path="/now-playing" element={<NowPlayingPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>

@@ -1,6 +1,8 @@
 import HomePage from '@/components/pages/HomePage';
 import SearchPage from '@/components/pages/SearchPage';
 import LibraryPage from '@/components/pages/LibraryPage';
+import ArtistPage from '@/components/pages/ArtistPage';
+import AlbumPage from '@/components/pages/AlbumPage';
 
 export const routes = {
   home: {
@@ -8,7 +10,6 @@ export const routes = {
     label: 'Home',
     path: '/',
     icon: 'Home',
-icon: 'Home',
     component: HomePage
   },
   search: {
@@ -16,7 +17,6 @@ icon: 'Home',
     label: 'Search',
     path: '/search',
     icon: 'Search',
-icon: 'Search',
     component: SearchPage
   },
   library: {
@@ -24,8 +24,21 @@ icon: 'Search',
     label: 'Your Library',
     path: '/library',
     icon: 'Library',
-icon: 'Library',
     component: LibraryPage
+  },
+  artist: {
+    id: 'artist',
+    label: 'Artist',
+    path: '/artist/:id',
+    component: ArtistPage,
+    hidden: true
+  },
+  album: {
+    id: 'album',
+    label: 'Album',
+    path: '/album/:id',
+    component: AlbumPage,
+    hidden: true
   }
 };
 
