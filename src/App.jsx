@@ -13,8 +13,8 @@ function App() {
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-background text-white">
-        <Routes>
-<Route path="/" element={<Layout />}>
+<Routes>
+          <Route path="/" element={<Layout />}>
             {routeArray.map(route => (
               <Route 
                 key={route.id}
@@ -22,6 +22,7 @@ function App() {
                 element={<route.component />}
               />
             ))}
+            {/* Additional specific routes - ensure all dynamic routes are covered */}
             <Route path="/playlist/:id" element={<PlaylistPage />} />
             <Route path="/now-playing" element={<NowPlayingPage />} />
             <Route path="*" element={<NotFoundPage />} />
