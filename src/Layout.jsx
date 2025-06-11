@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'react-toastify';
 import { playlistService, playerService } from './services';
 import { routes } from './config/routes';
 import ApperIcon from '@/components/ApperIcon';
 import PlayerBar from '@/components/organisms/PlayerBar';
+import CreatePlaylistModal from '@/components/molecules/CreatePlaylistModal';
 
 export default function Layout() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+const [sidebarOpen, setSidebarOpen] = useState(false);
   const [playlists, setPlaylists] = useState([]);
   const [playerState, setPlayerState] = useState(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [playlistName, setPlaylistName] = useState('');
   const location = useLocation();
 
   useEffect(() => {
@@ -33,9 +37,50 @@ export default function Layout() {
     } catch (err) {
       console.error('Failed to load player state:', err);
     }
+};
+
+  const handleCreatePlaylist = async () => {
+    if (!playlistName.trim()) {
+      toast.error('Please enter a playlist name');
+      return;
+    }
+
+    try {
+      const newPlaylist = await playlistService.create({
+        name: playlistName.trim(),
+        description: `Created on ${new Date().toLocaleDateString()}`,
+        coverUrl: '/api/placeholder/300/300',
+        public: false,
+        collaborative: false,
+        trackCount: 0,
+        duration: 0,
+        owner: {
+          id: 'current-user',
+          name: 'You',
+          image: '/api/placeholder/32/32'
+        }
+      });
+
+      toast.success(`Playlist "${newPlaylist.name}" created successfully!`);
+      setShowCreateModal(false);
+      setPlaylistName('');
+      await loadPlaylists(); // Refresh playlists
+    } catch (error) {
+      console.error('Failed to create playlist:', error);
+      toast.error('Failed to create playlist. Please try again.');
+    }
   };
 
-  const sidebarVariants = {
+  const openCreateModal = () => {
+    setShowCreateModal(true);
+  };
+
+  const closeCreateModal = () => {
+    setShowCreateModal(false);
+    setPlaylistName('');
+  };
+
+const sidebarVariants = {
     open: { x: 0 },
     closed: { x: '-100%' }
   };
@@ -95,9 +140,10 @@ export default function Layout() {
 
             {/* Quick Actions */}
             <div className="space-y-1">
-              <motion.button
+<motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={openCreateModal}
                 className="flex items-center space-x-3 px-3 py-2 text-gray-300 hover:text-white transition-colors w-full"
               >
                 <ApperIcon name="Plus" className="w-5 h-5" />
@@ -202,7 +248,10 @@ export default function Layout() {
 
                   {/* Quick Actions */}
                   <div className="space-y-1">
-                    <button className="flex items-center space-x-3 px-3 py-2 text-gray-300 hover:text-white transition-colors w-full">
+<button 
+                      onClick={openCreateModal}
+                      className="flex items-center space-x-3 px-3 py-2 text-gray-300 hover:text-white transition-colors w-full"
+                    >
                       <ApperIcon name="Plus" className="w-5 h-5" />
                       <span className="font-medium">Create Playlist</span>
                     </button>
@@ -261,8 +310,17 @@ export default function Layout() {
         </main>
       </div>
 
-      {/* Music Player Bar */}
-<PlayerBar playerState={playerState} onStateChange={setPlayerState} />
+{/* Music Player Bar */}
+      <PlayerBar playerState={playerState} onStateChange={setPlayerState} />
+
+      {/* Create Playlist Modal */}
+      <CreatePlaylistModal
+        show={showCreateModal}
+        onClose={closeCreateModal}
+        playlistName={playlistName}
+        onNameChange={(e) => setPlaylistName(e.target.value)}
+        onCreate={handleCreatePlaylist}
+      />
     </div>
   );
 }
