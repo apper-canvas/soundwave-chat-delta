@@ -27,26 +27,48 @@ const ArtistPage = () => {
     loadArtistData();
   }, [id]);
 
-  const loadArtistData = async () => {
+const loadArtistData = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      const [artistData, artistAlbums, artistTracks, relatedData] = await Promise.all([
-        artistService.getById(id),
+      // First, try to get the artist data
+      const artistData = await artistService.getById(id);
+      setArtist(artistData);
+
+      // Then load related data, but don't fail if some parts fail
+      const [artistAlbums, artistTracks, relatedData] = await Promise.allSettled([
         artistService.getAlbumsByArtist(id),
         artistService.getTracksByArtist(id),
         artistService.getRelatedArtists(id)
       ]);
 
-      setArtist(artistData);
-      setAlbums(artistAlbums);
-      setTopTracks(artistTracks);
-      setRelatedArtists(relatedData);
+      // Set data from successful requests, use empty arrays for failed ones
+      setAlbums(artistAlbums.status === 'fulfilled' ? artistAlbums.value || [] : []);
+      setTopTracks(artistTracks.status === 'fulfilled' ? artistTracks.value || [] : []);
+      setRelatedArtists(relatedData.status === 'fulfilled' ? relatedData.value || [] : []);
+
+      // Show warnings for failed requests (but don't fail the whole page)
+      if (artistAlbums.status === 'rejected') {
+        console.warn('Failed to load albums:', artistAlbums.reason);
+      }
+      if (artistTracks.status === 'rejected') {
+        console.warn('Failed to load tracks:', artistTracks.reason);
+      }
+      if (relatedData.status === 'rejected') {
+        console.warn('Failed to load related artists:', relatedData.reason);
+      }
     } catch (err) {
       console.error('Error loading artist:', err);
-      setError(err.message);
-      toast.error('Failed to load artist information');
+      const errorMessage = err.message || 'Failed to load artist information';
+      setError(errorMessage);
+      
+      // More specific error messages
+      if (err.message?.includes('not found')) {
+        toast.error('Artist not found. Please check the URL and try again.');
+      } else {
+        toast.error('Failed to load artist information');
+      }
     } finally {
       setLoading(false);
     }
@@ -66,11 +88,11 @@ const ArtistPage = () => {
       if (isFollowing) {
         await artistService.unfollow(id);
         setIsFollowing(false);
-        toast.success(`Unfollowed ${artist.name}`);
+toast.success(`Unfollowed ${artist?.name || 'artist'}`);
       } else {
         await artistService.follow(id);
         setIsFollowing(true);
-        toast.success(`Following ${artist.name}`);
+        toast.success(`Following ${artist?.name || 'artist'}`);
       }
     } catch (err) {
       toast.error('Failed to update follow status');
@@ -81,7 +103,7 @@ const ArtistPage = () => {
     if (topTracks.length > 0) {
       try {
         await playerService.playPlaylist(topTracks);
-        toast.success(`Playing ${artist.name}'s top tracks`);
+toast.success(`Playing ${artist?.name || 'artist'}'s top tracks`);
       } catch (err) {
         toast.error('Failed to play tracks');
       }

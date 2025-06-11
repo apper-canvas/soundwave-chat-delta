@@ -16,11 +16,13 @@ class ArtistService {
     return [...this.artists];
   }
 
-  async getById(id) {
+async getById(id) {
     await delay(200);
-    const artist = this.artists.find(a => a.id === id);
+    // Convert id to string for consistent comparison (URL params are always strings)
+    const artistId = String(id);
+    const artist = this.artists.find(a => String(a.id) === artistId);
     if (!artist) {
-      throw new Error('Artist not found');
+      throw new Error(`Artist with ID '${id}' not found`);
     }
     return { ...artist };
   }
@@ -38,30 +40,37 @@ class ArtistService {
     return sorted.slice(0, 10);
   }
 
-  async getAlbumsByArtist(artistId) {
+async getAlbumsByArtist(artistId) {
     await delay(250);
-    return this.albums.filter(album => album.artistId === artistId).map(album => ({ ...album }));
+    const id = String(artistId);
+    return this.albums.filter(album => String(album.artistId) === id).map(album => ({ ...album }));
   }
 
-  async getTracksByArtist(artistId) {
+async getTracksByArtist(artistId) {
     await delay(300);
     // Get artist's top tracks based on topTracks array
-    const artist = this.artists.find(a => a.id === artistId);
+    const id = String(artistId);
+    const artist = this.artists.find(a => String(a.id) === id);
     if (!artist) return [];
     
+    if (!artist.topTracks || !Array.isArray(artist.topTracks)) {
+      return [];
+    }
+    
     return artist.topTracks.map(trackId => {
-      const track = this.tracks.find(t => t.id === trackId);
+      const track = this.tracks.find(t => String(t.id) === String(trackId));
       return track ? { ...track } : null;
     }).filter(Boolean);
   }
 
-  async getRelatedArtists(artistId) {
+async getRelatedArtists(artistId) {
     await delay(300);
-    const artist = this.artists.find(a => a.id === artistId);
+    const id = String(artistId);
+    const artist = this.artists.find(a => String(a.id) === id);
     if (!artist || !artist.relatedArtists) return [];
     
     return artist.relatedArtists.map(relatedId => {
-      const relatedArtist = this.artists.find(a => a.id === relatedId);
+      const relatedArtist = this.artists.find(a => String(a.id) === String(relatedId));
       return relatedArtist ? { ...relatedArtist } : null;
     }).filter(Boolean);
   }
@@ -103,47 +112,51 @@ class ArtistService {
     return { ...newArtist };
   }
 
-  async update(id, updates) {
+async update(id, updates) {
     await delay(300);
-    const index = this.artists.findIndex(a => a.id === id);
+    const artistId = String(id);
+    const index = this.artists.findIndex(a => String(a.id) === artistId);
     if (index === -1) {
-      throw new Error('Artist not found');
+      throw new Error(`Artist with ID '${id}' not found`);
     }
     
     this.artists[index] = { ...this.artists[index], ...updates };
     return { ...this.artists[index] };
   }
 
-  async delete(id) {
+async delete(id) {
     await delay(250);
-    const index = this.artists.findIndex(a => a.id === id);
+    const artistId = String(id);
+    const index = this.artists.findIndex(a => String(a.id) === artistId);
     if (index === -1) {
-      throw new Error('Artist not found');
+      throw new Error(`Artist with ID '${id}' not found`);
     }
     
     const deletedArtist = this.artists.splice(index, 1)[0];
     return { ...deletedArtist };
   }
 
-  async follow(artistId) {
+async follow(artistId) {
     await delay(200);
-    const artist = this.artists.find(a => a.id === artistId);
+    const id = String(artistId);
+    const artist = this.artists.find(a => String(a.id) === id);
     if (!artist) {
-      throw new Error('Artist not found');
+      throw new Error(`Artist with ID '${artistId}' not found`);
     }
     
-    artist.followers += 1;
+    artist.followers = (artist.followers || 0) + 1;
     return { ...artist };
   }
 
-  async unfollow(artistId) {
+async unfollow(artistId) {
     await delay(200);
-    const artist = this.artists.find(a => a.id === artistId);
+    const id = String(artistId);
+    const artist = this.artists.find(a => String(a.id) === id);
     if (!artist) {
-      throw new Error('Artist not found');
+      throw new Error(`Artist with ID '${artistId}' not found`);
     }
     
-    artist.followers = Math.max(0, artist.followers - 1);
+    artist.followers = Math.max(0, (artist.followers || 0) - 1);
     return { ...artist };
   }
 }
