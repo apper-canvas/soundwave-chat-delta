@@ -175,8 +175,70 @@
     "topTracks": ["36", "37", "38", "39", "40"],
     "albums": ["16"],
     "relatedArtists": ["7", "9", "10"],
-    "location": "Lyon, France",
+"location": "Lyon, France",
     "formedYear": 2016,
     "description": "Ethereal synthwave with dream pop influences"
+  },
+  {
+    "id": "9",
+    "name": "Lata Mangeshkar",
+    "image": "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=800&h=800&fit=crop",
+    "coverImage": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1200&h=600&fit=crop",
+    "bio": "Lata Mangeshkar was an Indian playback singer and occasional music composer. She was widely considered one of the greatest and most influential singers in India. Her career spanned over seven decades, during which she recorded songs in over 36 Indian languages. Known as the 'Nightingale of India', she received numerous awards including the Bharat Ratna, India's highest civilian honor.",
+    "genres": ["Bollywood", "Classical", "Playback"],
+    "followers": 15000000,
+    "monthlyListeners": 8500000,
+    "verified": true,
+    "socialLinks": {
+      "website": "https://en.wikipedia.org/wiki/Lata_Mangeshkar"
+    },
+    "topTracks": ["41", "42", "43", "44", "45"],
+    "albums": ["17", "18", "19"],
+    "relatedArtists": ["10", "11"],
+    "location": "Mumbai, India",
+    "formedYear": 1942,
+    "description": "The Nightingale of India - legendary playback singer"
+  },
+  {
+    "id": "10",
+    "name": "Alka Yagnik",
+    "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&h=800&fit=crop",
+    "coverImage": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=600&fit=crop",
+    "bio": "Alka Yagnik is an Indian playback singer who works predominantly in Hindi cinema. She has been described in the media as one of the most prominent playback singers in Bollywood. She has received several accolades, including two National Film Awards and seven Filmfare Awards. She holds the Guinness World Record for being the most streamed Indian artist on YouTube.",
+    "genres": ["Bollywood", "Playback", "Pop"],
+    "followers": 12000000,
+    "monthlyListeners": 7200000,
+    "verified": true,
+    "socialLinks": {
+      "youtube": "https://www.youtube.com/alkayagnik",
+      "instagram": "@alkayagnik"
+    },
+    "topTracks": ["46", "47", "48", "49", "50"],
+    "albums": ["20", "21", "22"],
+    "relatedArtists": ["9", "11"],
+    "location": "Kolkata, India",
+    "formedYear": 1980,
+    "description": "Most streamed Indian artist with melodious voice"
+  },
+  {
+    "id": "11",
+    "name": "Udit Narayan",
+    "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=800&fit=crop",
+    "coverImage": "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1200&h=600&fit=crop",
+    "bio": "Udit Narayan is an Indian playback singer whose songs have been featured mainly in Hindi films. He has sung in 34 languages for films made in various Indian states. He has won four National Film Awards and five Filmfare Awards. He was awarded the Padma Shri in 2009 and Padma Bhushan in 2016 by the Government of India for his contribution to the arts.",
+    "genres": ["Bollywood", "Playback", "Folk"],
+    "followers": 9500000,
+    "monthlyListeners": 6800000,
+    "verified": true,
+    "socialLinks": {
+      "instagram": "@uditnarayanofficial",
+      "website": "https://en.wikipedia.org/wiki/Udit_Narayan"
+    },
+    "topTracks": ["51", "52", "53", "54", "55"],
+    "albums": ["23", "24"],
+    "relatedArtists": ["9", "10"],
+    "location": "Nepal/Mumbai, India",
+    "formedYear": 1978,
+    "description": "Versatile playback singer across multiple Indian languages"
   }
 ]
