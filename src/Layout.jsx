@@ -3,8 +3,8 @@ import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { playlistService, playerService } from './services';
 import { routes } from './config/routes';
-import ApperIcon from './components/ApperIcon';
-import MusicPlayer from './components/MusicPlayer';
+import ApperIcon from '@/components/ApperIcon';
+import PlayerBar from '@/components/organisms/PlayerBar';
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -262,7 +262,7 @@ export default function Layout() {
       </div>
 
       {/* Music Player Bar */}
-      <MusicPlayer playerState={playerState} onStateChange={setPlayerState} />
+<PlayerBar playerState={playerState} onStateChange={setPlayerState} />
     </div>
   );
 }
