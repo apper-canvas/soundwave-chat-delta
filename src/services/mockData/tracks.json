@@ -1,0 +1,202 @@
+[
+  {
+    "id": "1",
+    "title": "Midnight Dreams",
+    "artist": "Luna Eclipse",
+    "album": "Nocturnal Vibes",
+    "duration": 245,
+    "coverUrl": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/midnight-dreams.mp3",
+    "createdAt": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": "2",
+    "title": "Electric Pulse",
+    "artist": "Neon Lights",
+    "album": "Synthwave Chronicles",
+    "duration": 198,
+    "coverUrl": "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/electric-pulse.mp3",
+    "createdAt": "2024-01-14T15:20:00Z"
+  },
+  {
+    "id": "3",
+    "title": "Ocean Waves",
+    "artist": "Coastal Harmony",
+    "album": "Tidal Sounds",
+    "duration": 312,
+    "coverUrl": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/ocean-waves.mp3",
+    "createdAt": "2024-01-13T09:45:00Z"
+  },
+  {
+    "id": "4",
+    "title": "Urban Symphony",
+    "artist": "City Sounds",
+    "album": "Metropolitan Beats",
+    "duration": 267,
+    "coverUrl": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/urban-symphony.mp3",
+    "createdAt": "2024-01-12T18:10:00Z"
+  },
+  {
+    "id": "5",
+    "title": "Golden Hour",
+    "artist": "Sunset Collective",
+    "album": "Warm Melodies",
+    "duration": 189,
+    "coverUrl": "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/golden-hour.mp3",
+    "createdAt": "2024-01-11T14:25:00Z"
+  },
+  {
+    "id": "6",
+    "title": "Starlight Serenade",
+    "artist": "Cosmic Journey",
+    "album": "Interstellar",
+    "duration": 298,
+    "coverUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/starlight-serenade.mp3",
+    "createdAt": "2024-01-10T11:15:00Z"
+  },
+  {
+    "id": "7",
+    "title": "Rhythmic Thunder",
+    "artist": "Storm Chasers",
+    "album": "Weather Patterns",
+    "duration": 223,
+    "coverUrl": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/rhythmic-thunder.mp3",
+    "createdAt": "2024-01-09T16:40:00Z"
+  },
+  {
+    "id": "8",
+    "title": "Velvet Nights",
+    "artist": "Smooth Operators",
+    "album": "Jazz Lounge",
+    "duration": 276,
+    "coverUrl": "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/velvet-nights.mp3",
+    "createdAt": "2024-01-08T20:55:00Z"
+  },
+  {
+    "id": "9",
+    "title": "Digital Horizon",
+    "artist": "Future Sound",
+    "album": "Tech Noir",
+    "duration": 241,
+    "coverUrl": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/digital-horizon.mp3",
+    "createdAt": "2024-01-07T13:30:00Z"
+  },
+  {
+    "id": "10",
+    "title": "Mountain Echo",
+    "artist": "Alpine Acoustic",
+    "album": "Natural Sounds",
+    "duration": 195,
+    "coverUrl": "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/mountain-echo.mp3",
+    "createdAt": "2024-01-06T08:20:00Z"
+  },
+  {
+    "id": "11",
+    "title": "Crystal Waters",
+    "artist": "Ambient Flow",
+    "album": "Liquid Dreams",
+    "duration": 287,
+    "coverUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/crystal-waters.mp3",
+    "createdAt": "2024-01-05T12:45:00Z"
+  },
+  {
+    "id": "12",
+    "title": "Phoenix Rising",
+    "artist": "Rebirth Symphony",
+    "album": "Transformation",
+    "duration": 334,
+    "coverUrl": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/phoenix-rising.mp3",
+    "createdAt": "2024-01-04T17:10:00Z"
+  },
+  {
+    "id": "13",
+    "title": "Neon Pulse",
+    "artist": "Cyber Dreams",
+    "album": "Digital Age",
+    "duration": 208,
+    "coverUrl": "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/neon-pulse.mp3",
+    "createdAt": "2024-01-03T19:35:00Z"
+  },
+  {
+    "id": "14",
+    "title": "Sunset Boulevard",
+    "artist": "West Coast Vibes",
+    "album": "California Dreams",
+    "duration": 254,
+    "coverUrl": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/sunset-boulevard.mp3",
+    "createdAt": "2024-01-02T14:50:00Z"
+  },
+  {
+    "id": "15",
+    "title": "Moonlight Sonata Modern",
+    "artist": "Classical Remix",
+    "album": "Timeless Reworks",
+    "duration": 278,
+    "coverUrl": "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/moonlight-sonata-modern.mp3",
+    "createdAt": "2024-01-01T21:15:00Z"
+  },
+  {
+    "id": "16",
+    "title": "Bass Drop Revolution",
+    "artist": "Electronic Masters",
+    "album": "Frequency Wars",
+    "duration": 192,
+    "coverUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/bass-drop-revolution.mp3",
+    "createdAt": "2023-12-31T16:25:00Z"
+  },
+  {
+    "id": "17",
+    "title": "Whispered Secrets",
+    "artist": "Intimate Acoustic",
+    "album": "Close & Personal",
+    "duration": 165,
+    "coverUrl": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/whispered-secrets.mp3",
+    "createdAt": "2023-12-30T11:40:00Z"
+  },
+  {
+    "id": "18",
+    "title": "Electric Dreams",
+    "artist": "Synthwave Legends",
+    "album": "Retro Future",
+    "duration": 289,
+    "coverUrl": "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/electric-dreams.mp3",
+    "createdAt": "2023-12-29T18:55:00Z"
+  },
+  {
+    "id": "19",
+    "title": "Forest Awakening",
+    "artist": "Nature's Melody",
+    "album": "Organic Sounds",
+    "duration": 237,
+    "coverUrl": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/forest-awakening.mp3",
+    "createdAt": "2023-12-28T09:10:00Z"
+  },
+  {
+    "id": "20",
+    "title": "City Lights",
+    "artist": "Urban Nights",
+    "album": "Metropolitan Dreams",
+    "duration": 213,
+    "coverUrl": "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=300&h=300&fit=crop&crop=center",
+    "audioUrl": "/audio/city-lights.mp3",
+    "createdAt": "2023-12-27T22:30:00Z"
+  }
+]
