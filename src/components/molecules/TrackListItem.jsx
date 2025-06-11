@@ -102,7 +102,7 @@ const TrackListItem = ({
         </div>
       </div>
 
-      {/* Actions */}
+{/* Actions */}
       <div className="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
         {onLike && (
           <Button
@@ -117,6 +117,22 @@ const TrackListItem = ({
             <ApperIcon name="Heart" className="w-4 h-4" />
           </Button>
         )}
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={(e) => {
+            e.stopPropagation();
+            // Add to playlist functionality will be handled by parent component
+            if (window.openAddToPlaylistModal) {
+              window.openAddToPlaylistModal(track);
+            }
+          }}
+          className="w-8 h-8 p-0 rounded-full"
+          title="Add to playlist"
+        >
+          <ApperIcon name="Plus" className="w-4 h-4" />
+        </Button>
 
         {showRemove && onRemove && (
           <Button

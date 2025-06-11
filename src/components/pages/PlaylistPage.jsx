@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
-import { playlistService, playerService } from '@/services';
+import { playlistService, playerService, trackService } from '@/services';
 import TrackList from '@/components/organisms/TrackList';
 import ApperIcon from '@/components/ApperIcon';
 import Button from '@/components/atoms/Button';
@@ -10,19 +10,30 @@ import PlaylistDetailsHeader from '@/components/organisms/PlaylistDetailsHeader'
 import PlayerControls from '@/components/organisms/PlayerControls';
 import ErrorMessage from '@/components/molecules/ErrorMessage';
 import EmptyStateMessage from '@/components/molecules/EmptyStateMessage';
+import AddToPlaylistModal from '@/components/molecules/AddToPlaylistModal';
 
 const PlaylistPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [playlist, setPlaylist] = useState(null);
+const [playlist, setPlaylist] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentlyPlaying, setCurrentlyPlaying] = useState(null); // Assuming global player state
-
+  const [addToPlaylistModal, setAddToPlaylistModal] = useState({ isOpen: false, track: null });
+  
   useEffect(() => {
     if (id) {
       loadPlaylist();
     }
+    
+    // Set up global handler for add to playlist
+    window.openAddToPlaylistModal = (track) => {
+      setAddToPlaylistModal({ isOpen: true, track });
+    };
+    
+    return () => {
+      delete window.openAddToPlaylistModal;
+    };
   }, [id]);
 
   const loadPlaylist = async () => {
@@ -76,11 +87,21 @@ const PlaylistPage = () => {
     try {
       await trackService.toggleLike(trackId);
       toast.success('Track liked!');
-    } catch (error) {
+} catch (error) {
       toast.error('Failed to like track');
     }
   };
 
+  const handleCloseAddToPlaylistModal = () => {
+    setAddToPlaylistModal({ isOpen: false, track: null });
+  };
+
+  const handleAddToPlaylistSuccess = () => {
+    // Optionally refresh playlist if adding to current playlist
+    if (addToPlaylistModal.track) {
+      loadPlaylist();
+    }
+  };
   if (loading) {
     return (
       <div className="p-6 space-y-6">
@@ -195,11 +216,19 @@ const PlaylistPage = () => {
               showRemove={true}
               onPlay={handlePlayTrack}
               onLike={handleLikeTrack}
-              currentlyPlayingId={currentlyPlaying?.id}
+currentlyPlayingId={currentlyPlaying?.id}
             />
           </div>
         )}
       </div>
+      
+      {/* Add to Playlist Modal */}
+      <AddToPlaylistModal
+        isOpen={addToPlaylistModal.isOpen}
+        onClose={handleCloseAddToPlaylistModal}
+        track={addToPlaylistModal.track}
+        onSuccess={handleAddToPlaylistSuccess}
+      />
     </div>
   );
 };
